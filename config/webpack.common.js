@@ -27,57 +27,61 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.vue$/, use: {
-                    loader: 'vue-loader'
-                }
-            },
-            {
-                test: /\.m?js$/, use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
+                oneOf: [
+                    {
+                        test: /\.vue$/, use: {
+                            loader: 'vue-loader'
+                        }
+                    },
+                    {
+                        test: /\.m?js$/, use: {
+                            loader: 'babel-loader',
+                            options: {
+                                presets: ['@babel/preset-env']
+                            }
+                        }
+                    },
+                    // old 语法
+                    // {
+                    //     test: /\.(jpg|gif|jpeg|png|svg|webp)$/, use: {
+                    //         loader: 'file-loader',
+                    //         options: {
+                    //             esModule: false
+                    //         }
+                    //     }
+                    // }
+                    // webpack5 语法
+                    {
+                        test: /\.(jpg|gif|jpeg|png|svg|webp)$/, 
+                        // webpack 将按照默认条件，自动地在 resource 和 inline 之间进行选择：
+                        // 小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型
+                        type: 'asset',
+                        generator: {
+                            // 生成输出文件名称 query代表url后面”？“的参数
+                            filename: 'static/images/[hash:10][ext][query]'
+                        },
+                    },
+                    {
+                        test: /\.(ttf|woff2?|mp3|mp4|avi)$/, 
+                        type: 'asset/resource', // 只会原封不动输出，不会转base64
+                        generator: {
+                            // 生成输出文件名称 query代表url后面”？“的参数
+                            filename: 'static/media/[hash:10][ext][query]'
+                        },
+                    },
+                    {
+                        test: /\.js$/,
+                        exclude: /(node_modules)/,
+                        loader: 'babel-loader'
+                        // use: {
+                        //   loader: 'babel-loader',
+                        //   options: {
+                        //     presets: ['@babel/preset-env']
+                        //   }
+                        // }
                     }
-                }
-            },
-            // old 语法
-            // {
-            //     test: /\.(jpg|gif|jpeg|png|svg|webp)$/, use: {
-            //         loader: 'file-loader',
-            //         options: {
-            //             esModule: false
-            //         }
-            //     }
-            // }
-            // webpack5 语法
-            {
-                test: /\.(jpg|gif|jpeg|png|svg|webp)$/, 
-                // webpack 将按照默认条件，自动地在 resource 和 inline 之间进行选择：
-                // 小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型
-                type: 'asset',
-                generator: {
-                    // 生成输出文件名称 query代表url后面”？“的参数
-                    filename: 'static/images/[hash:10][ext][query]'
-                },
-            },
-            {
-                test: /\.(ttf|woff2?|mp3|mp4|avi)$/, 
-                type: 'asset/resource', // 只会原封不动输出，不会转base64
-                generator: {
-                    // 生成输出文件名称 query代表url后面”？“的参数
-                    filename: 'static/media/[hash:10][ext][query]'
-                },
-            },
-            {
-                test: /\.js$/,
-                exclude: /(node_modules)/,
-                loader: 'babel-loader'
-                // use: {
-                //   loader: 'babel-loader',
-                //   options: {
-                //     presets: ['@babel/preset-env']
-                //   }
-                // }
-              }
+                ]
+            }
         ],
     },
     plugins: [

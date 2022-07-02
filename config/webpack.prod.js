@@ -34,12 +34,16 @@ const config = merge(common,{
     module: {
       rules: [
         {
-            test: /\.css$/, 
-            use: getStyleLoader()
-        },
-        {
-            test: /\.s[ac]ss$/, 
-            use:  getStyleLoader('sass-loader'),
+            oneOf: [
+                {
+                    test: /\.css$/, 
+                    use: getStyleLoader()
+                },
+                {
+                    test: /\.s[ac]ss$/, 
+                    use:  getStyleLoader('sass-loader'),
+                }
+            ]
         }
       ]  
     },
@@ -58,8 +62,7 @@ const config = merge(common,{
                 extractComments: false // 不配置此项，默认打包完会生成LISENCE.TXT文件
             })
         ],
-        splitChunks: {       
-            // chunks: "all",
+        splitChunks: {
             cacheGroups: {         
                 vendors: {           
                     test: /[\\/]node_modules[\\/]/ ,           
