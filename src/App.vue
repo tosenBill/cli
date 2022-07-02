@@ -27,11 +27,3 @@ export default {
         background: red;
     }
 </style>
-
-<!-- <style lang="less" scoped>
-    .app{
-        .div{
-            display: flex;
-        }
-    }
-</style> -->

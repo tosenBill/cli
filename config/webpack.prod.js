@@ -3,6 +3,27 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common')
 const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+const getStyleLoader = (pre) => {
+    return [
+        MiniCssExtractPlugin.loader, 
+        'css-loader', 
+        {
+            // 能解决大多数样式兼容问题 + 配置package.json文件下'browserslist';
+            // eg: display:flex ----> display: -ms-flexbox;
+            loader: 'postcss-loader',
+            options: {
+                postcssOptions: {
+                    plugins: [
+                        "postcss-preset-env" 
+                    ]
+                }
+            }
+        },
+        pre
+    ].filter(Boolean)
+}
 
 const config = merge(common,{
     mode: 'production',
@@ -14,39 +35,11 @@ const config = merge(common,{
       rules: [
         {
             test: /\.css$/, 
-            use: [
-                MiniCssExtractPlugin.loader,
-                'css-loader',
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        postcssOptions: {
-                            plugins: [
-                                "postcss-preset-env" // 能解决大多数样式兼容问题
-                            ]
-                        }
-                    }
-                }
-          ]
+            use: getStyleLoader()
         },
         {
             test: /\.s[ac]ss$/, 
-            use: [
-              MiniCssExtractPlugin.loader, 
-              'css-loader', 
-              {
-                  // 能解决大多数样式兼容问题 + 配置package.json文件下'browserslist';
-                  // eg: display:flex ----> display: -ms-flexbox;
-                  loader: 'postcss-loader',
-                  options: {
-                      postcssOptions: {
-                          plugins: [
-                              "postcss-preset-env" 
-                          ]
-                      }
-                  }
-              },
-              'sass-loader']
+            use:  getStyleLoader('sass-loader'),
         }
       ]  
     },
@@ -54,7 +47,8 @@ const config = merge(common,{
         // 'MiniCssExtractPlugin.loader'提取css成单独的文件
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].[chunkhash].css'
-        })
+        }),
+        new CssMinimizerPlugin(),
     ],
     optimization: {     
         // runtimeChunk: 'multiple' , // or true
