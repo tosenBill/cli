@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <div class="box">
-            <button @click="goAbort">跳转页面111111</button>    
+            <button @click="goAbort">跳转页面</button>    
         </div>
         <router-view></router-view>
         <img src="./assets/img/favicon.png" alt="">

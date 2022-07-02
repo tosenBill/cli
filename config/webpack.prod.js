@@ -70,7 +70,8 @@ const config = merge(common,{
                     minSize: 0, // 限制最小大小( byte )         
                 },
             },     
-        }
+        },
+        devtool: "source-map", // 提示行和列
     }
 })
 

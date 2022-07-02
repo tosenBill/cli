@@ -18,7 +18,7 @@ const config = merge(common,{
         ]  
       },
     plugins: [],
-    devtool: "inline-source-map",
+    devtool: "cheap-module-source-map", // 开发环境只用提示行
     devServer: {
         compress: true,
         port: 9000,
