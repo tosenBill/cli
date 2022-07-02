@@ -33,10 +33,15 @@ const config = {
                 }
             },
             {
-                test: /\.m?js$/, use: {
+                test: /\.m?js$/, 
+                include: path.resolve(__dirname, '../src'), // 只处理src下的文件，其它文件都不处理。
+                // exclude: /(node_modules)/, // 排除 node_modules 下的文件，其它文件都处理。
+                use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
+                    // presets: ['@babel/preset-env'] // .babelrc.js已经定义过了，这里不用再加
+                    cacheDirectory: true, // 开启babel缓存（非第一次）
+                    cacheCompression: false, // 关闭缓存文件压缩
                     }
                 }
             },
@@ -67,18 +72,6 @@ const config = {
                     // 生成输出文件名称 query代表url后面”？“的参数
                     filename: 'static/media/[hash:10][ext][query]'
                 },
-            },
-            {
-                test: /\.js$/,
-                exclude: /(node_modules)/, // 排除 node_modules 下的文件，其它文件都处理。
-                // include: path.resolve(__dirname, '../src'), // 只处理src下的文件，其它文件都不处理。
-                loader: 'babel-loader'
-                // use: {
-                //   loader: 'babel-loader',
-                //   options: {
-                //     presets: ['@babel/preset-env']
-                //   }
-                // }
             }
         ],
     },
@@ -91,7 +84,9 @@ const config = {
         }),
         new ESLintPlugin({
             context: path.resolve(__dirname, '../src'),
-            exclude: 'node_modules' // 默认值
+            exclude: 'node_modules', // 默认值
+            cache: true,
+            cacheLocation: path.resolve(__dirname, '../node_modules/.cache/eslint-catch')
         })
     ],
     resolve: {
@@ -99,7 +94,7 @@ const config = {
           '@': path.resolve(__dirname, '../src'),
           '@api': path.resolve(__dirname, '../api_config/api'),
         },
-      }
+    }
 }
 
 module.exports = config
