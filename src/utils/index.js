@@ -2,7 +2,7 @@ export function locationPath() {
     let myBaseUrl = ''
     const pathname = location.pathname
     const environment = ['dev', 'test']
-    const enFlag = environment.some((item, index) => {
+    const enFlag = environment.some((item) => {
       return pathname.includes(item)
     })
     const pathArr = pathname.split('/')
