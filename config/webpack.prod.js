@@ -13,11 +13,41 @@ const config = merge(common,{
     module: {
       rules: [
         {
-            test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader']
+            test: /\.css$/, 
+            use: [
+                MiniCssExtractPlugin.loader,
+                'css-loader',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: {
+                            plugins: [
+                                "postcss-preset-env" // 能解决大多数样式兼容问题
+                            ]
+                        }
+                    }
+                }
+          ]
         },
         {
-            test: /\.s[ac]ss$/, use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-        },
+            test: /\.s[ac]ss$/, 
+            use: [
+              MiniCssExtractPlugin.loader, 
+              'css-loader', 
+              {
+                  // 能解决大多数样式兼容问题 + 配置package.json文件下'browserslist';
+                  // eg: display:flex ----> display: -ms-flexbox;
+                  loader: 'postcss-loader',
+                  options: {
+                      postcssOptions: {
+                          plugins: [
+                              "postcss-preset-env" 
+                          ]
+                      }
+                  }
+              },
+              'sass-loader']
+        }
       ]  
     },
     plugins: [

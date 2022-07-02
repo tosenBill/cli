@@ -93,23 +93,7 @@ const config = {
           '@': path.resolve(__dirname, '../src'),
           '@api': path.resolve(__dirname, '../api_config/api'),
         },
-      },
-    optimization: {     
-        // runtimeChunk: 'multiple' , // or true
-        splitChunks: {       
-            // chunks: "all",
-            cacheGroups: {         
-                vendors: {           
-                    test: /[\\/]node_modules[\\/]/ ,           
-                    chunks: 'all',           
-                    name: 'vendors',           
-                    enforce: true , // 不参考全域的属性          
-                    // priority: 10 , // 预设为0，必须大于预设cacheGroups 
-                    minSize: 0, // 限制最小大小( byte )         
-                },
-            },     
-        }
-    }
+      }
 }
 
 module.exports = config
