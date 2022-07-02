@@ -6,9 +6,9 @@ const chalk = require("chalk");
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-const threads = os.cpus().length  // 获取cpu核数，为了多进程打包
-console.log('cpu核数为：', threads)
-
+//多进程打包在项目大的时候效果明显，项目小反而可能慢，因为每个进程池开启需要600ms左右延迟
+// 获取cpu核数，为了多进程打包
+const threads = os.cpus().length  
 // const NODE_ENV = process.env.NODE_ENV
 
 const progressPlugin = new ProgressBarPlugin({
@@ -50,9 +50,13 @@ const config = {
                     {
                         loader: 'babel-loader',
                         options: {
-                        // presets: ['@babel/preset-env'] // .babelrc.js已经定义过了，这里不用再加
-                        cacheDirectory: true, // 开启babel缓存（非第一次）
-                        cacheCompression: false, // 关闭缓存文件压缩
+                            // presets: ['@babel/preset-env'] // .babelrc.js已经定义过了，这里不用再加
+                            cacheDirectory: true, // 开启babel缓存（非第一次）
+                            cacheCompression: false, // 关闭缓存文件压缩
+                            // babel默认情况下会为每个文件注入辅助代码，辅助代码会是一个新的定义，可能定义了n次，
+                            //使用下面这个插件，就会直接使用 @babel/plugin-transform-runtime 上面的辅助代码，就不会重新定义了,
+                            // 避免了重复定义，从而减小体积，代码越多越明显。
+                            plugins: ['@babel/plugin-transform-runtime']
                         }
                     }
                 ]
