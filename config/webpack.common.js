@@ -1,9 +1,13 @@
+const os = require('os')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require("chalk");
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin');
+
+const threads = os.cpus().length  // 获取cpu核数，为了多进程打包
+console.log('cpu核数为：', threads)
 
 // const NODE_ENV = process.env.NODE_ENV
 
@@ -36,14 +40,22 @@ const config = {
                 test: /\.m?js$/, 
                 include: path.resolve(__dirname, '../src'), // 只处理src下的文件，其它文件都不处理。
                 // exclude: /(node_modules)/, // 排除 node_modules 下的文件，其它文件都处理。
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                    // presets: ['@babel/preset-env'] // .babelrc.js已经定义过了，这里不用再加
-                    cacheDirectory: true, // 开启babel缓存（非第一次）
-                    cacheCompression: false, // 关闭缓存文件压缩
+                use: [
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            works: threads // 进程池数量
+                        }
+                    },
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                        // presets: ['@babel/preset-env'] // .babelrc.js已经定义过了，这里不用再加
+                        cacheDirectory: true, // 开启babel缓存（非第一次）
+                        cacheCompression: false, // 关闭缓存文件压缩
+                        }
                     }
-                }
+                ]
             },
             // old 语法
             // {
@@ -86,7 +98,8 @@ const config = {
             context: path.resolve(__dirname, '../src'),
             exclude: 'node_modules', // 默认值
             cache: true,
-            cacheLocation: path.resolve(__dirname, '../node_modules/.cache/eslint-catch')
+            cacheLocation: path.resolve(__dirname, '../node_modules/.cache/eslint-catch'),
+            threads, // 开启多进程
         })
     ],
     resolve: {

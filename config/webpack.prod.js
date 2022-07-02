@@ -1,3 +1,4 @@
+const os = require('os')
 const path = require('path')
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common')
@@ -48,14 +49,16 @@ const config = merge(common,{
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].[chunkhash].css'
         }),
-        new CssMinimizerPlugin(),
+        new CssMinimizerPlugin(), // 压缩css
     ],
     optimization: {     
+        // 压缩的操作
         // runtimeChunk: 'multiple' , // or true
         minimize: true,
         minimizer: [ 
             new TerserPlugin({
-                extractComments: false // 不配置此项，默认打包完会生成LISENCE.TXT文件
+                extractComments: false, // 不配置此项，默认打包完会生成LISENCE.TXT文件
+                parallel: os.cpus().length // 压缩js
             })
         ],
         splitChunks: {
