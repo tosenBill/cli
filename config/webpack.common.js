@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require("chalk");
 const { VueLoaderPlugin } = require('vue-loader')
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 // const NODE_ENV = process.env.NODE_ENV
 
@@ -27,60 +28,57 @@ const config = {
     module: {
         rules: [
             {
-                oneOf: [
-                    {
-                        test: /\.vue$/, use: {
-                            loader: 'vue-loader'
-                        }
-                    },
-                    {
-                        test: /\.m?js$/, use: {
-                            loader: 'babel-loader',
-                            options: {
-                                presets: ['@babel/preset-env']
-                            }
-                        }
-                    },
-                    // old 语法
-                    // {
-                    //     test: /\.(jpg|gif|jpeg|png|svg|webp)$/, use: {
-                    //         loader: 'file-loader',
-                    //         options: {
-                    //             esModule: false
-                    //         }
-                    //     }
-                    // }
-                    // webpack5 语法
-                    {
-                        test: /\.(jpg|gif|jpeg|png|svg|webp)$/, 
-                        // webpack 将按照默认条件，自动地在 resource 和 inline 之间进行选择：
-                        // 小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型
-                        type: 'asset',
-                        generator: {
-                            // 生成输出文件名称 query代表url后面”？“的参数
-                            filename: 'static/images/[hash:10][ext][query]'
-                        },
-                    },
-                    {
-                        test: /\.(ttf|woff2?|mp3|mp4|avi)$/, 
-                        type: 'asset/resource', // 只会原封不动输出，不会转base64
-                        generator: {
-                            // 生成输出文件名称 query代表url后面”？“的参数
-                            filename: 'static/media/[hash:10][ext][query]'
-                        },
-                    },
-                    {
-                        test: /\.js$/,
-                        exclude: /(node_modules)/,
-                        loader: 'babel-loader'
-                        // use: {
-                        //   loader: 'babel-loader',
-                        //   options: {
-                        //     presets: ['@babel/preset-env']
-                        //   }
-                        // }
+                test: /\.vue$/, use: {
+                    loader: 'vue-loader'
+                }
+            },
+            {
+                test: /\.m?js$/, use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
                     }
-                ]
+                }
+            },
+            // old 语法
+            // {
+            //     test: /\.(jpg|gif|jpeg|png|svg|webp)$/, use: {
+            //         loader: 'file-loader',
+            //         options: {
+            //             esModule: false
+            //         }
+            //     }
+            // }
+            // webpack5 语法
+            {
+                test: /\.(jpg|gif|jpeg|png|svg|webp)$/, 
+                // webpack 将按照默认条件，自动地在 resource 和 inline 之间进行选择：
+                // 小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型
+                type: 'asset',
+                generator: {
+                    // 生成输出文件名称 query代表url后面”？“的参数
+                    filename: 'static/images/[hash:10][ext][query]'
+                },
+            },
+            {
+                test: /\.(ttf|woff2?|mp3|mp4|avi)$/, 
+                type: 'asset/resource', // 只会原封不动输出，不会转base64
+                generator: {
+                    // 生成输出文件名称 query代表url后面”？“的参数
+                    filename: 'static/media/[hash:10][ext][query]'
+                },
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/, // 排除 node_modules 下的文件，其它文件都处理。
+                // include: path.resolve(__dirname, '../src'), // 只处理src下的文件，其它文件都不处理。
+                loader: 'babel-loader'
+                // use: {
+                //   loader: 'babel-loader',
+                //   options: {
+                //     presets: ['@babel/preset-env']
+                //   }
+                // }
             }
         ],
     },
@@ -90,6 +88,10 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'index.html',
             favicon: './favicon.ico'
+        }),
+        new ESLintPlugin({
+            context: path.resolve(__dirname, '../src'),
+            exclude: 'node_modules' // 默认值
         })
     ],
     resolve: {

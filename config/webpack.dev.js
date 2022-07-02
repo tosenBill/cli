@@ -9,16 +9,12 @@ const config = merge(common,{
     },
     module: {
         rules: [
-          {
-              oneOf: [ // 每个文件只能被其中第一个处理
-                {
-                    test: /\.css$/, use: ['style-loader', 'css-loader']
-                },
-                {
-                    test: /\.s[ac]ss$/, use: ['style-loader', 'css-loader', 'sass-loader']
-                },
-              ]
-          }
+            {
+                test: /\.css$/, use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.s[ac]ss$/, use: ['style-loader', 'css-loader', 'sass-loader']
+            },
         ]  
       },
     plugins: [],

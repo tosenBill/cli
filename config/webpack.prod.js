@@ -34,16 +34,12 @@ const config = merge(common,{
     module: {
       rules: [
         {
-            oneOf: [
-                {
-                    test: /\.css$/, 
-                    use: getStyleLoader()
-                },
-                {
-                    test: /\.s[ac]ss$/, 
-                    use:  getStyleLoader('sass-loader'),
-                }
-            ]
+            test: /\.css$/, 
+            use: getStyleLoader()
+        },
+        {
+            test: /\.s[ac]ss$/, 
+            use:  getStyleLoader('sass-loader'),
         }
       ]  
     },
@@ -74,8 +70,8 @@ const config = merge(common,{
                 },
             },     
         },
-        devtool: "source-map", // 提示行和列
-    }
+    },
+    devtool: "source-map", // 提示行和列
 })
 
 module.exports = config
