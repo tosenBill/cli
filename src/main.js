@@ -1,4 +1,8 @@
-import 'core-js'
+// 完整映入
+// import 'core-js'
+// 按需加载: 如 promise
+// import 'core-js/es/promise'
+
 import Vue from 'vue'
 
 import App from './App.vue'
