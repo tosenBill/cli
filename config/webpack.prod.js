@@ -118,6 +118,9 @@ const config = merge(common,{
                 },
             },     
         },
+        runtimeChunk: {
+            name: (entrypoint) => `runtime~${entrypoint.name}`,
+        },
     },
     devtool: "source-map", // 提示行和列
 })
