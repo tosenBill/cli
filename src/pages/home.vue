@@ -15,7 +15,7 @@ export default {
   methods: {
     getBanner () {
       this.$http.User.getBanner().then(res =>{
-        console.log('res', res)
+        // console.log('res', res)
       })
     }
   }

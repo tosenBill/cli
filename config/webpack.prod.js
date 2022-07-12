@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const { extendDefaultPlugins } = require("svgo");   
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const getStyleLoader = (pre) => {
     return [
@@ -51,6 +52,12 @@ const config = merge(common,{
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].css',
             chunkFilename: 'static/css/[name].[chunkhash].css'
+        }),
+        new WorkboxPlugin.GenerateSW({
+            // 这些选项帮助快速启用 ServiceWorkers
+            // 不允许遗留任何“旧的” ServiceWorkers
+            clientsClaim: true,
+            skipWaiting: true,
         }),
     ],
     optimization: {     
