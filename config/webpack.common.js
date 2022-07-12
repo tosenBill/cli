@@ -5,6 +5,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require("chalk");
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin');
+const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
 
 //多进程打包在项目大的时候效果明显，项目小反而可能慢，因为每个进程池开启需要600ms左右延迟
 // 获取cpu核数，为了多进程打包
@@ -101,6 +102,10 @@ const config = {
             template: 'index.html',
             favicon: './favicon.ico'
         }),
+        new PreloadWebpackPlugin({
+            rel: 'preload',
+            as: 'script'
+          }),
         new ESLintPlugin({
             context: path.resolve(__dirname, '../src'),
             exclude: 'node_modules', // 默认值
