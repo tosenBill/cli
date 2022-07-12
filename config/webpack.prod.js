@@ -5,6 +5,8 @@ const common = require('./webpack.common')
 const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const { extendDefaultPlugins } = require("svgo");   
 
 const getStyleLoader = (pre) => {
     return [
@@ -47,7 +49,8 @@ const config = merge(common,{
     plugins: [
         // 'MiniCssExtractPlugin.loader'提取css成单独的文件
         new MiniCssExtractPlugin({
-            filename: 'static/css/[name].[chunkhash].css'
+            filename: 'static/css/[name].css',
+            chunkFilename: 'static/css/[name].[chunkhash].css'
         }),
     ],
     optimization: {     
@@ -59,7 +62,49 @@ const config = merge(common,{
             new TerserPlugin({
                 extractComments: false, // 不配置此项，默认打包完会生成LISENCE.TXT文件
                 parallel: os.cpus().length // 压缩js
-            })
+            }),
+            new ImageMinimizerPlugin({
+                minimizer: {
+                  implementation: ImageMinimizerPlugin.imageminGenerate,
+                  options: {
+                    // Lossless optimization with custom option
+                    // Feel free to experiment with options for better result for you
+                    plugins: [
+                      ["gifsicle", { interlaced: true }],
+                      ["jpegtran", { progressive: true }],
+                      ["optipng", { optimizationLevel: 5 }],
+                      // Svgo configuration here https://github.com/svg/svgo#configuration
+                      [
+                        "svgo",
+                        {
+                            plugins: [
+                                'preset-default',
+                                'prefixIds',
+                                {
+                                    name: 'sortAttrs',
+                                    params: {
+                                      xmlnsOrder: 'alphabetical',
+                                    },
+                                  },
+                            ]
+                        //   plugins: extendDefaultPlugins([
+                        //     {
+                        //       name: "removeViewBox",
+                        //       active: false,
+                        //     },
+                        //     {
+                        //       name: "addAttributesToSVGElement",
+                        //       params: {
+                        //         attributes: [{ xmlns: "http://www.w3.org/2000/svg" }],
+                        //       },
+                        //     },
+                        //   ]),
+                        },
+                      ],
+                    ],
+                  },
+                },
+              }),
         ],
         splitChunks: {
             cacheGroups: {         

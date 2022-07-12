@@ -28,6 +28,9 @@ const config = {
     entry: './src/main.js',
     output: {
         filename: '[name].[chunkhash].bundle.js',
+        chunkFilename: 'static/js/[name].chunk.js', // 给打包输出的其它文件命名
+        // 图片字体等通过type: asset处理资源的命名方式
+        assetModuleFilename: "static/media/[hash:10][ext][query]",
     },
     module: {
         rules: [
@@ -72,22 +75,22 @@ const config = {
             // }
             // webpack5 语法
             {
-                test: /\.(jpg|gif|jpeg|png|svg|webp)$/, 
+                test: /\.(jpg|gif|jpe?g|png|svg)$/i, 
                 // webpack 将按照默认条件，自动地在 resource 和 inline 之间进行选择：
                 // 小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型
                 type: 'asset',
-                generator: {
-                    // 生成输出文件名称 query代表url后面”？“的参数
-                    filename: 'static/images/[hash:10][ext][query]'
-                },
+                // generator: { // output.assetModuleFilename 统一命名
+                //     // 生成输出文件名称 query代表url后面”？“的参数
+                //     filename: 'static/images/[hash:10][ext][query]'
+                // },
             },
             {
                 test: /\.(ttf|woff2?|mp3|mp4|avi)$/, 
                 type: 'asset/resource', // 只会原封不动输出，不会转base64
-                generator: {
-                    // 生成输出文件名称 query代表url后面”？“的参数
-                    filename: 'static/media/[hash:10][ext][query]'
-                },
+                // generator: { // output.assetModuleFilename 统一命名
+                //     // 生成输出文件名称 query代表url后面”？“的参数
+                //     filename: 'static/media/[hash:10][ext][query]'
+                // },
             }
         ],
     },

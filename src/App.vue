@@ -5,7 +5,7 @@
         </div>
         <router-view></router-view>
         <img src="./assets/img/favicon.png" alt="">
-        <img src="./assets/images/tree.jpg" alt="">
+        <img src="./assets/images/tree.jpeg" alt="">
     </div>
 </template>
 
