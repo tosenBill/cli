@@ -29,6 +29,10 @@ const config = merge(common,{
             },
         },
     },
+    resolve: {
+        // 自动补全文件扩展名
+        extensions: ['.vue', '.js', '.json']
+    },
     stats: 'errors-only'
 })
 

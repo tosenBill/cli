@@ -7,10 +7,11 @@ module.exports = {
     },
     parserOptions: {
         ecmaVersion: 6, // es6
-        sourceType: "module" // es module
+        sourceType: "module", // es module
     },
     rules: {
         "no-var": 2, // 不能是用var定义变量
     },
+    parser: "@babel/eslint-parser",
     plugins: ["import"], // 解决动态导入语法报错
 }

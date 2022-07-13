@@ -6,7 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-const { extendDefaultPlugins } = require("svgo");   
+// const { extendDefaultPlugins } = require("svgo");   
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const getStyleLoader = (pre) => {
@@ -129,7 +129,7 @@ const config = merge(common,{
             name: (entrypoint) => `runtime~${entrypoint.name}`,
         },
     },
-    devtool: "source-map", // 提示行和列
+    devtool: "cheap-module-source-map", // 提示行和列
 })
 
 module.exports = config
