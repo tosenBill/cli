@@ -16,6 +16,8 @@ import "../src/css/iconfont.css"
 // import '@/testBundle/a.js'
 // import '@/testBundle/b.js'
 
+console.log(111)
+
 import $http from '../api_config/api'
 
 Vue.prototype.$http = $http

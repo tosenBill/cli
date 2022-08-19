@@ -8,6 +8,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 6, // es6
         sourceType: "module", // es module
+        requireConfigFile: false
     },
     rules: {
         "no-var": 2, // 不能是用var定义变量

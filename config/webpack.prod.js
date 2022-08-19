@@ -36,7 +36,7 @@ const config = merge(common,{
         clean: true,
     },
     module: {
-      rules: [
+      rules: [ 
         {
             test: /\.css$/, 
             use: getStyleLoader()
@@ -44,6 +44,14 @@ const config = merge(common,{
         {
             test: /\.s[ac]ss$/, 
             use:  getStyleLoader('sass-loader'),
+        },
+        {
+            test: /\.js$/,
+            loader: path.resolve(__dirname, '../loaders/clearLogLoader'),
+            options: {
+                author: 'tosenBill',
+                // age: 27 // 这里不能新增属性，因为clearLogLoader配置文件scheme.json中 "additionalProperties" 为 false
+            }
         }
       ]  
     },
