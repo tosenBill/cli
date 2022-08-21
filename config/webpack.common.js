@@ -106,7 +106,8 @@ const config = {
             threads, // 开启多进程
         }),
         // new TestPlugin()
-        new BannerWebpackPlugin({
+        // 打包文件添加注释的插件
+        new BannerWebpackPlugin({ 
             author: 'tosenBill',
             createTime: new Date()
         })

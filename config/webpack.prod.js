@@ -8,6 +8,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 // const { extendDefaultPlugins } = require("svgo");   
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const ClearWebpackPlugin = require('../plugins/clear-webpack-plugin')
 
 const getStyleLoader = (pre) => {
     return [
@@ -33,7 +34,7 @@ const config = merge(common,{
     mode: 'production',
     output: {
         path: path.resolve(__dirname, '../dist'),
-        clean: true,
+        // clean: true,
     },
     module: {
       rules: [ 
@@ -67,6 +68,8 @@ const config = merge(common,{
             clientsClaim: true,
             skipWaiting: true,
         }),
+        // 删除dist文件
+        new ClearWebpackPlugin()
     ],
     optimization: {     
         // 压缩的操作
