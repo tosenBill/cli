@@ -6,6 +6,7 @@ const chalk = require("chalk");
 const { VueLoaderPlugin } = require('vue-loader')
 const ESLintPlugin = require('eslint-webpack-plugin');
 const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
+const TestPlugin = require('../plugins/test-plugin')
 
 //多进程打包在项目大的时候效果明显，项目小反而可能慢，因为每个进程池开启需要600ms左右延迟
 // 获取cpu核数，为了多进程打包
@@ -102,7 +103,8 @@ const config = {
             cache: true,
             cacheLocation: path.resolve(__dirname, '../node_modules/.cache/eslint-catch'),
             threads, // 开启多进程
-        })
+        }),
+        new TestPlugin()
     ],
     resolve: {
         alias: {
