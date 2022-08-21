@@ -9,6 +9,7 @@ const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 // const { extendDefaultPlugins } = require("svgo");   
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const ClearWebpackPlugin = require('../plugins/clear-webpack-plugin')
+const AnalyzeWebpackPlugin = require('../plugins/analyze-webpack-plugin')
 
 const getStyleLoader = (pre) => {
     return [
@@ -69,7 +70,9 @@ const config = merge(common,{
             skipWaiting: true,
         }),
         // 删除dist文件
-        new ClearWebpackPlugin()
+        new ClearWebpackPlugin(),
+        // 生成资源大小md文件
+        new AnalyzeWebpackPlugin()
     ],
     optimization: {     
         // 压缩的操作
