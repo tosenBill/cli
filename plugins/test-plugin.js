@@ -10,7 +10,7 @@ class TestPlugin {
         console.log('testplugin constructor')
     }
     apply(compiler) {
-        debugger;
+        // debugger;
         console.log('compiler: ', compiler)
         // 有文档可知，environment是同步沟子，所以需要使用tap注册
         compiler.hooks.environment.tap("TestPlugin", () => {
